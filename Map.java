@@ -2,10 +2,8 @@ import org.lwjgl.opengl.GL11;
 
 /*
  *  Math.java
- *  Project Disconnect
- *
- *  Created by Drew Malin on 9/3/2011.
- *  Copyright 2011 Drew Malin. All rights reserved.
+ *  ECS 163 Final
+ *  Alan Tai and Benjamin Roye
  *
  */
 

@@ -1,9 +1,7 @@
 /*
  *  Timer.java
- *  Project Disconnect
- *
- *  Created by Ben Roye on 8/29/2011.
- *  Copyright 2011 Ben Roye. All rights reserved.
+ *  ECS 163 Final
+ *  Alan Tai and Benjamin Roye
  *
  */
 public class Timer
