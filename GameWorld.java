@@ -63,9 +63,9 @@ public class GameWorld {
 		r = new float[3];
 		
 		camera = new Camera();
-		camera.setPosition(0f, 7f, 7f);
-		camera.setTarget(0f, 0f, 0f);
-		camera.setUp(0f, 1f, 0f);
+		camera.setPosition(7f, -11f, 7f);
+		camera.setTarget(7f, 0f, 7f);
+		camera.setUp(0f, 0f, 1f);
 		
 		mouse = new float[3];
 		
@@ -130,7 +130,8 @@ public class GameWorld {
 	
 	
 	public void loadMap() {	
-		map = new Map("GridWorld.txt");	
+		// /Users/benroye/Documents/workspace/Disconnect
+		map = new Map("usMapMod.svg");	
 	}
 	
 	
@@ -176,30 +177,30 @@ public class GameWorld {
 		//TODO: Implement jumping with the spacebar
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_W) && Keyboard.isKeyDown(Keyboard.KEY_A)) {
-			hero.changePositionZ(hero.movementRate * diagonal);
+			hero.changePositionZ(-hero.movementRate * diagonal);
 			hero.changePositionX(hero.movementRate * diagonal);
 		}
 		else if (Keyboard.isKeyDown(Keyboard.KEY_W) && Keyboard.isKeyDown(Keyboard.KEY_D)) {
-			hero.changePositionZ(hero.movementRate * diagonal);
+			hero.changePositionZ(-hero.movementRate * diagonal);
 			hero.changePositionX(-hero.movementRate * diagonal);
 		}
 		else if (Keyboard.isKeyDown(Keyboard.KEY_S) && Keyboard.isKeyDown(Keyboard.KEY_A)) {
-			hero.changePositionZ(-hero.movementRate * diagonal);
+			hero.changePositionZ(hero.movementRate * diagonal);
 			hero.changePositionX(hero.movementRate * diagonal);
 		}
 		else if (Keyboard.isKeyDown(Keyboard.KEY_S) && Keyboard.isKeyDown(Keyboard.KEY_D)) {
-			hero.changePositionZ(-hero.movementRate * diagonal);
+			hero.changePositionZ(hero.movementRate * diagonal);
 			hero.changePositionX(-hero.movementRate * diagonal);
 		}
 		else {
 			if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-				hero.changePositionZ(hero.movementRate);
+				hero.changePositionZ(-hero.movementRate);
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
 				hero.changePositionX(hero.movementRate);
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-				hero.changePositionZ(-hero.movementRate);
+				hero.changePositionZ(hero.movementRate);
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
 				hero.changePositionX(-hero.movementRate);
