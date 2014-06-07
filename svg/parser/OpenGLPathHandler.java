@@ -41,6 +41,8 @@ public class OpenGLPathHandler implements PathHandler {
 		LogMessage.log(TAG, "movetoRel", "x:"+x+" y:"+y, debug);
 		
 		currentPoint = currentPoint.add(x,y);
+		endPath();
+		startPath();
 		addCurrentPoint();
 		
 

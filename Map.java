@@ -53,6 +53,8 @@ public class Map {
 			}
 			GL11.glEnd();
 		}
+		
+		/*
 		GL11.glBegin(GL11.GL_LINES);
 		
 		for (int x = -5; x <= 5; x++) {

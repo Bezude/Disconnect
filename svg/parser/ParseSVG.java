@@ -125,11 +125,13 @@ public class ParseSVG {
 			pp.parse(path);
 			
 			// Get transformation data
-			String transform = elm.getAttribute("transform");
+			//String transform = elm.getAttribute("transform");
 			
 			// Transform the resulting spline
-			ph.currentSpline.transform(parseTransform(transform));
-			addPath(ph.currentSpline);
+			//ph.currentSpline.transform(parseTransform(transform));
+			for(Spline s : ph.splines) {
+				addPath(s);
+			}
 		}
  	}
 	
@@ -163,7 +165,7 @@ public class ParseSVG {
 	
 	public void addPath(Spline s) {
 		// Apply global transform
-		s.transform(at);
+		//s.transform(at);
 		paths.add(s);
 	}
 	

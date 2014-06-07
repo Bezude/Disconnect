@@ -16,6 +16,7 @@ public class Hero extends Character {
 	@Override
 	public void draw() {
 		
+		/*
 		calculateRotation();
 		
 		GL11.glPushMatrix();
@@ -49,6 +50,6 @@ public class Hero extends Character {
 			GL11.glVertex3d(  0d,     0d,    -.5d );
 			GL11.glVertex3d(  0.25d,  0.25d, 0d );
 		GL11.glEnd();
-		GL11.glPopMatrix();		
+		GL11.glPopMatrix();	// */	
 	}
 }
