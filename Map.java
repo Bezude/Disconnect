@@ -69,9 +69,9 @@ public class Map {
 			GL11.glVertex3d(5d, 0d, (double)z);
 			GL11.glVertex3d(-5d, 0d, (double)z);
 
-		}// */
+		}
 		
-		GL11.glEnd();
+		GL11.glEnd();// */
 	}
 	
 }

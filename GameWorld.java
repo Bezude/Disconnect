@@ -18,7 +18,7 @@ import org.lwjgl.util.glu.*;
 
 public class GameWorld {
 	
-	private int width = 1024;
+	private int width = 1400;
 	private int height = 768;
 	private float diagonal = .70710678f;
 	
@@ -113,6 +113,8 @@ public class GameWorld {
 			System.exit(1);
 		}
 		
+		setGraphicsMode("3D");
+		/*
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
 		
@@ -125,7 +127,7 @@ public class GameWorld {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		GL11.glLoadIdentity();
+		GL11.glLoadIdentity();// */
 	}
 	
 	
@@ -154,6 +156,28 @@ public class GameWorld {
 			GL11.glTranslatef(hero.getPosition(0), hero.getPosition(1), hero.getPosition(2));
 			map.draw();
 		GL11.glPopMatrix();
+		
+		setGraphicsMode("2D");
+		// draw UI
+		// example
+		GL11.glBegin(GL11.GL_LINES);
+		
+		for (int x = -5; x <= 5; x++) {
+
+			GL11.glVertex2d((double)x*100, -500d);
+			GL11.glVertex2d((double)x*100, 500d);
+
+		}
+		
+		for (int z = -5; z <= 5; z++) {
+			
+			GL11.glVertex2d(500d, (double)z*100);
+			GL11.glVertex2d(-500d, (double)z*100);
+
+		}
+		GL11.glEnd();
+		// end example
+		setGraphicsMode("3D");
 	}
 	
 	
@@ -257,5 +281,45 @@ public class GameWorld {
 		pos[2] = positionNear.get(2) + (m * r[2]);
 
 		return pos;
+	}
+	
+	private void setGraphicsMode(String string) {
+		if (string.equals("2D")) {
+			GL11.glDepthMask(false);
+			GL11.glDisable(GL11.GL_DEPTH_TEST);								
+			GL11.glMatrixMode(GL11.GL_PROJECTION);
+			
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			GL11.glEnable(GL11.GL_TEXTURE_2D);	
+			
+			GL11.glLoadIdentity();
+			GL11.glOrtho(0, width, height, 0, -1, 1);
+			GL11.glMatrixMode(GL11.GL_MODELVIEW);
+			GL11.glShadeModel(GL11.GL_SMOOTH);
+		}
+		
+		else if (string.equals("3D")) {
+			GL11.glDepthMask(true);
+			GL11.glMatrixMode(GL11.GL_PROJECTION);
+			GL11.glLoadIdentity();
+			
+			GLU.gluPerspective(frustAngle, (float)width/(float)height, zNear, zFar);
+			GLU.gluLookAt(
+					camera.getPosition(0),	camera.getPosition(1), 	camera.getPosition(2),
+					camera.getTarget(0), 	camera.getTarget(1), 	camera.getTarget(2),
+					camera.getUp(0), 		camera.getUp(1), 		camera.getUp(2));
+			GL11.glEnable(GL11.GL_DEPTH_TEST);
+			
+			GL11.glMatrixMode(GL11.GL_MODELVIEW);
+			
+		}
+		else
+			try {
+				throw new Exception("Invalid graphics mode. Mode must be 2D or 3D.");
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
 	}
 }
