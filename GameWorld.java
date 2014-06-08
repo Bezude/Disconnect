@@ -6,11 +6,10 @@
  */
 
 import java.awt.Font;
-import java.io.InputStream;
-import org.lwjgl.opengl.GL11;
+//import java.io.InputStream;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
-import org.newdawn.slick.util.ResourceLoader;
+//import org.newdawn.slick.util.ResourceLoader;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -159,6 +158,7 @@ public class GameWorld {
         GL11.glPopMatrix();
 
         setGraphicsMode("2D");
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
         // draw UI
         //UI Box
         GL11.glEnable(GL11.GL_BLEND);
@@ -170,9 +170,10 @@ public class GameWorld {
         GL11.glVertex2d(width - 5, height - 5);
         GL11.glVertex2d(width - 295, height - 5);
         GL11.glEnd();
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+//        GL11.glDisable(GL11.GL_BLEND);
+//        GL11.glEnable(GL11.GL_BLEND);
+//        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
         Color.white.bind();
         font.drawString(width - 290, 50, "TEXT HERE", Color.white);
         GL11.glDisable(GL11.GL_BLEND);
