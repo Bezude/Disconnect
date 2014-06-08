@@ -154,16 +154,12 @@ public class Main {
                 }
             }
         });
-        
-        for (int i = 0; i < 7504; i++) {
-            System.out.println(universities[i][0]);
-        }
+     
         //TODO: splash screen/main menu need to look into lwjgl capabilities for this
         GameWorld gw = new GameWorld();
 
         gw.loadMap();
         gw.loadWorld();
         gw.start();
-
     }
 }

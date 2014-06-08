@@ -8,3 +8,5 @@ nbproject/
 build/
 *.xml
 *.mf
+dist/
+FontExample.java
