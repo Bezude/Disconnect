@@ -26,8 +26,9 @@ public class Map {
 		for(int i = 0; i < states.size(); i++) {
 			for(int j = 0; j < states.get(i).size(); j++) {
 				Vec2 v = states.get(i).get(j);
-				v.x /= 140f;
-				v.y /= 140f;
+				v.x /= 118f;
+				v.y /= 118f;
+				v.y += .05f;
 			}
 		}
 		// lat 25 to 50; long -65 to -125
@@ -38,6 +39,15 @@ public class Map {
 				latLines.get(j).add(project(i,j0));
 			}
 		}
+		ArrayList<Vec2> lat49 = new ArrayList<Vec2>();
+		lat49.add(project(-125,49));
+		lat49.add(project(-65,49));
+		latLines.add(lat49);
+		
+		// 32.5344¡ N, 117.1228¡ W Cali-Mexico corner
+		// 48.9881¡ N, 122.7436¡ W WA-Canada corner
+		// 47.3765¡ N, 68.3253¡ W ME-Canada corner
+		// 25.1067¡ N, 80.4300¡ W Key Largo Florida
 	}
 
 	public void draw() {
@@ -52,7 +62,7 @@ public class Map {
 			}
 			GL11.glEnd();
 		}
-		/*
+		
 		for(int j = 0; j < latLines.size(); j++) {
 			GL11.glBegin(GL11.GL_LINE_STRIP);
 			GL11.glColor3d(1.0, 0.0, 0.0);
@@ -85,19 +95,24 @@ public class Map {
 	
 	public Vec2 project(double lamda, double phi) {
 		Vec2 projected = new Vec2();
-		double phi0 = Math.toRadians(25);  // 32.7150¡ N, 117.1625¡ W San Diego
-		double phi1 = Math.toRadians(25);
-		double phi2 = Math.toRadians(50);
-		double lamda0 = Math.toRadians(-125);
+		// map -125 to -65 : 0 to 16
+		projected.x = (float)(((lamda+125)/60)*16);
+		// map 25 to 50 : 8 to 0
+		projected.y = (float)(8-(((phi-25)/25)*8));
 		
-		double n = (Math.sin(phi1) + Math.sin(phi2));
-		double theta = n*(lamda - lamda0);
-		double C = Math.cos(phi1)*Math.cos(phi1) + 2*n*Math.sin(phi1);
-		double rho = Math.sqrt(C - 2*n*Math.sin(phi))/n;
-		double rho0 = Math.sqrt(C - 2*n*Math.sin(phi0))/n;
-		
-		projected.x = (float)(rho*Math.sin(theta));
-		projected.y = (float)(rho0 - rho*Math.cos(theta));
+//		double phi0 = Math.toRadians(25);  // 32.7150¡ N, 117.1625¡ W San Diego
+//		double phi1 = Math.toRadians(25);
+//		double phi2 = Math.toRadians(50);
+//		double lamda0 = Math.toRadians(-125);
+//		
+//		double n = (Math.sin(phi1) + Math.sin(phi2));
+//		double theta = n*(lamda - lamda0);
+//		double C = Math.cos(phi1)*Math.cos(phi1) + 2*n*Math.sin(phi1);
+//		double rho = Math.sqrt(C - 2*n*Math.sin(phi))/n;
+//		double rho0 = Math.sqrt(C - 2*n*Math.sin(phi0))/n;
+//		
+//		projected.x = (float)(rho*Math.sin(theta));
+//		projected.y = (float)(rho0 - rho*Math.cos(theta));
 		
 		return projected;
 	}

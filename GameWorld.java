@@ -219,8 +219,8 @@ public class GameWorld {
         r = new float[3];
 
         camera = new Camera();
-        camera.setPosition(8f, 10f, 5f);
-        camera.setTarget(8f, 0f, 5f);
+        camera.setPosition(10f, 10f, 4f);
+        camera.setTarget(10f, 0f, 4f);
         camera.setUp(0f, 0f, -1f);
 
         mouse = new float[3];
