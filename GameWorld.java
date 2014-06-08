@@ -29,13 +29,17 @@ import org.lwjgl.util.glu.*;
 
 public class GameWorld {
 
+    private boolean morefilteroptions = false;
     private int offset = 0;
     private int barpos = 2 + (15 * 3);
 
     boolean twoyear = true;
     boolean fouryear = true;
     boolean lessthantwoyear = true;
-
+    boolean hasmedical = true;
+    boolean publicschool = true;
+    boolean privateschool = true;   
+    
     public static int instnm = 0;
     public static int address = 1;
     public static int city = 2;
@@ -249,9 +253,9 @@ public class GameWorld {
         Display.destroy();
     }
 
-    private void checkbox(int ypos, boolean check) {
-        int x1 = width - 295;
-        int x2 = width - 285;
+    private void checkbox(int xoffset, int ypos, boolean check) {
+        int x1 = width - (290 + xoffset);
+        int x2 = width - (280 + xoffset);
         int y1 = 5 + ypos;
         int y2 = 15 + ypos;
         GL11.glBegin(GL11.GL_QUADS);
@@ -358,16 +362,35 @@ public class GameWorld {
         //UI Box
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glBegin(GL11.GL_QUADS); //Right background for primary filter options
         GL11.glColor4d(1, 1, 1, 0.70);
         GL11.glVertex2d(width - 295, 5);
         GL11.glVertex2d(width - 5, 5);
         GL11.glVertex2d(width - 5, height - 5);
         GL11.glVertex2d(width - 295, height - 5);
         GL11.glEnd();
-        checkbox(2 + (15 * 0), lessthantwoyear);
-        checkbox(2 + (15 * 1), twoyear);
-        checkbox(2 + (15 * 2), fouryear);
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glColor4d(1, 1, 1, 0.70);
+        GL11.glVertex2d(width - 455, 5);
+        GL11.glVertex2d(width - 300, 5);
+        GL11.glVertex2d(width - 300, 20);
+        GL11.glVertex2d(width - 455, 20);
+        GL11.glEnd();
+        if (morefilteroptions) {
+            GL11.glBegin(GL11.GL_QUADS);
+            GL11.glColor4d(1, 1, 1, 0.70);
+            GL11.glVertex2d(width - 465, 5);
+            GL11.glVertex2d(width - 300, 5);
+            GL11.glVertex2d(width - 300, height - 5);
+            GL11.glVertex2d(width - 465, height - 5);
+            GL11.glEnd();
+            checkbox(170, 2 + (15 * 1), hasmedical);
+            checkbox(170, 2 + (15 * 2), publicschool);
+            checkbox(170, 2 + (15 * 3), privateschool);
+        }
+        checkbox(0, 2 + (15 * 0), lessthantwoyear);
+        checkbox(0, 2 + (15 * 1), twoyear);
+        checkbox(0, 2 + (15 * 2), fouryear);
         GL11.glBegin(GL11.GL_QUADS);
         if (barpos < 2 + (15 * 3)) {
             barpos = 2 + (15 * 3);
@@ -384,17 +407,27 @@ public class GameWorld {
         int mousex = Mouse.getX();
         int mousey = Mouse.getY();
         if (Mouse.isButtonDown(0)) {
-            if (mousex > width - 22 && mousex < width - 8) {
+            if (mousex > width - 22 && mousex < width - 8 && height - mousey < 600 && height - mousey > 50) {
                 barpos = height - mousey - 10;
             } else if (mousex > width - 295 && mousex < width - 30) {
                 if (height - mousey > 5 && height - mousey < 18) {
                     lessthantwoyear = toggle(lessthantwoyear);
                 }
-                if (height - mousey > 20 && height - mousey < 33) {
+                else if (height - mousey > 20 && height - mousey < 33) {
                     twoyear = toggle(twoyear);
                 }
-                if (height - mousey > 35 && height - mousey < 48) {
+                else if (height - mousey > 35 && height - mousey < 48) {
                     fouryear = toggle(fouryear);
+                }
+            } else if (mousex > width - 430 && mousex < width - 300 && height - mousey > 4 && height - mousey < 19) {
+                morefilteroptions = toggle(morefilteroptions);
+            } else if (mousex > width - 462 && mousex < width - 300 && morefilteroptions) {
+                if (height - mousey > 18 && height - mousey < 33) {
+                    hasmedical = toggle(hasmedical);
+                } else if (height - mousey > 35 && height - mousey < 48) {
+                    publicschool = toggle(publicschool);
+                } else if (height - mousey > 50 && height - mousey < 63) {
+                    privateschool = toggle(privateschool);
                 }
             }
         }
@@ -403,12 +436,18 @@ public class GameWorld {
 //        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         Color.white.bind();
-        font.drawString(width - 280, 5, "Less-than-Two Year Colleges", Color.white);
-        font.drawString(width - 280, 5 + 15, "Two Year Colleges", Color.white);
-        font.drawString(width - 280, 5 + (15 * 2), "Four Year Colleges", Color.white);
+        font.drawString(width - 270, 5, "Less-than-Two Year Colleges", Color.green);
+        font.drawString(width - 270, 5 + 15, "Two Year Colleges", Color.green);
+        font.drawString(width - 270, 5 + (15 * 2), "Four Year Colleges", Color.green);
+        font.drawString(width - 445, 5, "More Filter Options", Color.black);
+        if (morefilteroptions) {
+            font.drawString(width - 445, 20, "Offers Medical Degrees", Color.green);
+            font.drawString(width - 445, 5 + (15 * 2), "Public Colleges", Color.green);
+            font.drawString(width - 445, 5 + (15 * 3), "Private Colleges", Color.green);
+        }
         for (int i = 0; i < 7503; i++) {
             if (5 + (15 * (i + 3)) - ((barpos - (2 + (15 * 3))) * 210) > 49) {
-                font.drawString(width - 280, 5 + (15 * (i + 3)) - ((barpos - (2 + (15 * 3))) * 210), universities[i + 1][0], Color.white);
+                font.drawString(width - 280, 5 + (15 * (i + 3)) - ((barpos - (2 + (15 * 3))) * 210), universities[i + 1][0], Color.blue);
             }
         }
         GL11.glDisable(GL11.GL_BLEND);

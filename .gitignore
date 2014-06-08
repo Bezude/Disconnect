@@ -1,4 +1,3 @@
-*.csv
 *.class
 .DS_STORE
 .classpath
