@@ -13,7 +13,7 @@ public class LogMessage {
   /**
    * @uml.property  name="loggingEnabled"
    */
-  public boolean loggingEnabled = true;
+  public boolean loggingEnabled = false;
   
   public static void error(String TAG, String function, String desc) {
     System.out.print("Error - "+TAG+":"+function+","+desc+"\n");

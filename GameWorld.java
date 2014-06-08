@@ -319,7 +319,7 @@ public class GameWorld {
 
     public void loadMap() {
         // /Users/benroye/Documents/workspace/Disconnect
-        map = new Map("usMapMod.svg");
+        map = new Map("comboMod.svg");
     }
 
     public void loadWorld() {

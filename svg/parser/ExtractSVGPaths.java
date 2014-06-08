@@ -38,14 +38,15 @@ public class ExtractSVGPaths {
 	    	Spline sl1 = l.paths.get(i);
 	    	
 	    	// Refine the spline to an appropriate level of accuracy
-			sl1.refine(0.1f);
-			
+//	    	System.out.print("From: "+ sl1.getVertices().size());
+//			sl1.refine(0.1f);
+//			System.out.println(" To: "+ sl1.getVertices().size());
 			ArrayList<Vec2> vecs = new ArrayList<Vec2>();
 			
 			/*
 			 * Convert from Vertex to Vec2
 			 */
-			ArrayList<Vertex> al = l.paths.get(i).getVertices();
+			ArrayList<Vertex> al = sl1.getVertices();
 			//al.remove(0);
 			/*
 	 		Vertex [] verts = new Vertex [al.size()];

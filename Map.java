@@ -16,29 +16,28 @@ import svg.parser.ExtractSVGPaths;
 public class Map {
 	
 	private ArrayList<ArrayList<Vec2>> states;
+	private ArrayList<ArrayList<Vec2>> latLines;
 
 	public Map(String string) {
 		
 		states = ExtractSVGPaths.extract(string);
+		latLines = new ArrayList<ArrayList<Vec2>>();
 
 		for(int i = 0; i < states.size(); i++) {
 			for(int j = 0; j < states.get(i).size(); j++) {
 				Vec2 v = states.get(i).get(j);
-				v.x /= 60f;
-				v.y /= 60f;
-				//System.out.println("x: "+v.x+" | y: "+v.y);
+				v.x /= 140f;
+				v.y /= 140f;
 			}
 		}
-//		final LinkedList points = new LinkedList();
-//        PointsParser pp = new PointsParser();
-//        PointsHandler ph = new DefaultPointsHandler() {
-//            public void point(float x, float y) throws ParseException {
-//                Point2D p = new Point2D.Float(x, y);
-//                points.add(p);
-//            }
-//        };
-//        pp.setPointsHandler(ph);
-//        pp.parse(s);
+		// lat 25 to 50; long -65 to -125
+		for(int j = 0; j <= 5; j++) {
+			double j0 = (double)(25 + 5*j);
+			latLines.add(new ArrayList<Vec2>());
+			for(double i = -65; i >= -125; i--) {
+				latLines.get(j).add(project(i,j0));
+			}
+		}
 	}
 
 	public void draw() {
@@ -53,7 +52,17 @@ public class Map {
 			}
 			GL11.glEnd();
 		}
-		
+		/*
+		for(int j = 0; j < latLines.size(); j++) {
+			GL11.glBegin(GL11.GL_LINE_STRIP);
+			GL11.glColor3d(1.0, 0.0, 0.0);
+			for(int i = 0; i < latLines.get(j).size(); i++) {
+				Vec2 v = latLines.get(j).get(i);
+				//System.out.println("x: "+v.x+" | y: "+v.y);
+				GL11.glVertex3d((double)v.x, 0d, (double)v.y);
+			}
+			GL11.glEnd();
+		} // */
 		/*
 		GL11.glBegin(GL11.GL_LINES);
 		
@@ -72,6 +81,25 @@ public class Map {
 		}
 		
 		GL11.glEnd();// */
+	}
+	
+	public Vec2 project(double lamda, double phi) {
+		Vec2 projected = new Vec2();
+		double phi0 = Math.toRadians(25);  // 32.7150¡ N, 117.1625¡ W San Diego
+		double phi1 = Math.toRadians(25);
+		double phi2 = Math.toRadians(50);
+		double lamda0 = Math.toRadians(-125);
+		
+		double n = (Math.sin(phi1) + Math.sin(phi2));
+		double theta = n*(lamda - lamda0);
+		double C = Math.cos(phi1)*Math.cos(phi1) + 2*n*Math.sin(phi1);
+		double rho = Math.sqrt(C - 2*n*Math.sin(phi))/n;
+		double rho0 = Math.sqrt(C - 2*n*Math.sin(phi0))/n;
+		
+		projected.x = (float)(rho*Math.sin(theta));
+		projected.y = (float)(rho0 - rho*Math.cos(theta));
+		
+		return projected;
 	}
 	
 }

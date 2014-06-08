@@ -89,10 +89,12 @@ public class ParseSVG {
 		// Get graphics transform
 		NodeList nl = baseElement.getElementsByTagName("g");
 
-		Element gTag = (Element) nl.item(0);
-		String transform = gTag.getAttribute("transform");
-		
-		at.composeBefore(parseTransform(transform));
+		if (nl.getLength() > 0) {
+			Element gTag = (Element) nl.item(0);
+			String transform = gTag.getAttribute("transform");
+			
+			at.composeBefore(parseTransform(transform));
+		}
 	}
 	
 	private AffineTransformation parseTransform (String transform) {
@@ -121,7 +123,7 @@ public class ParseSVG {
 
 			// Get path data
 			String path = elm.getAttribute("d");
-			LogMessage.print(path);
+			//LogMessage.print(path);
 			pp.parse(path);
 			
 			// Get transformation data
