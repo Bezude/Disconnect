@@ -45,7 +45,7 @@ public class Map {
 		
 		for(int j = 0; j < states.size(); j++) {
 			GL11.glBegin(GL11.GL_LINE_STRIP);
-			GL11.glColor3d(1.0, 0.0, 0.0);
+			GL11.glColor3d(1.0, 1.0, 1.0);
 			for(int i = 0; i < states.get(j).size(); i++) {
 				Vec2 v = states.get(j).get(i);
 				//System.out.println("x: "+v.x+" | y: "+v.y);
