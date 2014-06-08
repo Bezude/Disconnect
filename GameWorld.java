@@ -5,6 +5,8 @@
  *
  */
 
+import java.util.concurrent.TimeUnit;
+
 import au.com.bytecode.opencsv.CSV;
 import au.com.bytecode.opencsv.CSVReadProc;
 import java.awt.Font;
@@ -27,10 +29,13 @@ import org.lwjgl.util.glu.*;
 
 public class GameWorld {
 
+    private int offset = 0;
+    private int barpos = 2 + (15 * 3);
+
     boolean twoyear = true;
     boolean fouryear = true;
     boolean lessthantwoyear = true;
-    
+
     public static int instnm = 0;
     public static int address = 1;
     public static int city = 2;
@@ -165,7 +170,7 @@ public class GameWorld {
             .separator(',') // delimiter of fields
             .create();       // new instance is immutable
     public static final String[][] universities = new String[7504][25];
-    
+
     private TrueTypeFont font;
     private boolean antiAlias = false;
     private int width = 1400;
@@ -321,6 +326,22 @@ public class GameWorld {
         hero.draw();
     }
 
+    public boolean toggle(boolean var) {
+        try {
+            TimeUnit.MILLISECONDS.sleep(150);
+        } catch (InterruptedException e) {
+            //Handle exception
+            System.err.println("Caught error: " + e);
+        }
+        boolean temp = false;
+        if (var) {
+            temp = false;
+        } else {
+            temp = true;
+        }
+        return temp;
+    }
+
     public void updateMap() {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
@@ -344,19 +365,51 @@ public class GameWorld {
         GL11.glVertex2d(width - 5, height - 5);
         GL11.glVertex2d(width - 295, height - 5);
         GL11.glEnd();
-        checkbox(2+(15*0),lessthantwoyear);
-        checkbox(2+(15*1),twoyear);
-        checkbox(2+(15*2),fouryear);
+        checkbox(2 + (15 * 0), lessthantwoyear);
+        checkbox(2 + (15 * 1), twoyear);
+        checkbox(2 + (15 * 2), fouryear);
+        GL11.glBegin(GL11.GL_QUADS);
+        if (barpos < 2 + (15 * 3)) {
+            barpos = 2 + (15 * 3);
+        }
+        if (barpos > 580) {
+            barpos = 580;
+        }
+        GL11.glColor4d(0.01, 0.01, 0.41, 0.80);
+        GL11.glVertex2d(width - 22, barpos);
+        GL11.glVertex2d(width - 8, barpos);
+        GL11.glVertex2d(width - 8, barpos + 40);
+        GL11.glVertex2d(width - 22, barpos + 40);
+        GL11.glEnd();
+        int mousex = Mouse.getX();
+        int mousey = Mouse.getY();
+        if (Mouse.isButtonDown(0)) {
+            if (mousex > width - 22 && mousex < width - 8) {
+                barpos = height - mousey - 10;
+            } else if (mousex > width - 295 && mousex < width - 30) {
+                if (height - mousey > 5 && height - mousey < 18) {
+                    lessthantwoyear = toggle(lessthantwoyear);
+                }
+                if (height - mousey > 20 && height - mousey < 33) {
+                    twoyear = toggle(twoyear);
+                }
+                if (height - mousey > 35 && height - mousey < 48) {
+                    fouryear = toggle(fouryear);
+                }
+            }
+        }
 //        GL11.glDisable(GL11.GL_BLEND);
 //        GL11.glEnable(GL11.GL_BLEND);
 //        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         Color.white.bind();
-        font.drawString(width - 280, 5, "Two Year Colleges", Color.white);
-        font.drawString(width - 280, 5+15, "Two Year Colleges", Color.white);
-        font.drawString(width - 280, 5+(15*2), "Four Year Colleges", Color.white);
-        for (int i = 0; i < 7503; i ++) {
-            font.drawString(width - 280, 5+(15*(i+3)), universities[i+1][0], Color.white);
+        font.drawString(width - 280, 5, "Less-than-Two Year Colleges", Color.white);
+        font.drawString(width - 280, 5 + 15, "Two Year Colleges", Color.white);
+        font.drawString(width - 280, 5 + (15 * 2), "Four Year Colleges", Color.white);
+        for (int i = 0; i < 7503; i++) {
+            if (5 + (15 * (i + 3)) - ((barpos - (2 + (15 * 3))) * 210) > 49) {
+                font.drawString(width - 280, 5 + (15 * (i + 3)) - ((barpos - (2 + (15 * 3))) * 210), universities[i + 1][0], Color.white);
+            }
         }
         GL11.glDisable(GL11.GL_BLEND);
 
