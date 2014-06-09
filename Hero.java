@@ -62,7 +62,7 @@ public class Hero extends Character {
 	public void drawPyramid(double lamda, double phi) {
 		
 		Vec2 v = Map.project(lamda, phi);
-		System.out.println("X: "+v.x+", Y: "+v.y);
+		//System.out.println("X: "+v.x+", Y: "+v.y);
 		GL11.glBegin(GL11.GL_QUADS);	//Back
 			GL11.glVertex3d(  v.x+a,  a, v.y+0d );
 			GL11.glVertex3d( v.x-a,  a, v.y+0d );
@@ -94,7 +94,7 @@ public class Hero extends Character {
 public void drawCube(double lamda, double phi) {
 		
 		Vec2 v = Map.project(lamda, phi);
-		System.out.println("X: "+v.x+", Y: "+v.y);
+		//System.out.println("X: "+v.x+", Y: "+v.y);
 		GL11.glBegin(GL11.GL_QUADS);	//Back
 			GL11.glVertex3d(  v.x+a,  a, v.y+b );
 			GL11.glVertex3d( v.x-a,  a, v.y+b );
