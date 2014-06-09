@@ -186,6 +186,12 @@ public class GameWorld {
     private Hero hero;
     private Map map;
     float mouse[];
+    
+    float rotate;
+    static float SWOOP_DUR;
+    float targetX;
+    float targetZ;
+    float zoom;
 
     private Timer timer;
     private long frameDelta;
@@ -214,10 +220,15 @@ public class GameWorld {
 
         pos = new float[3];
         r = new float[3];
+        
+        rotate = 0;
+        targetX = 10;
+        targetZ = 4;
+        zoom = 0;
 
         camera = new Camera();
-        camera.setPosition(10f, 10f, 4f);
-        camera.setTarget(10f, 0f, 4f);
+        camera.setPosition(targetX, 10f, targetZ);
+        camera.setTarget(targetX, 0f, targetZ);
         camera.setUp(0f, 0f, -1f);
 
         mouse = new float[3];
@@ -236,7 +247,8 @@ public class GameWorld {
 
             frameDelta = timer.getNanoDelta(); //This value will get passed to all the updates that are time dependent.
             if (frameDelta < FRAME_LENGTH_MINIMUM) { //If very little time has passed since the last update, yield the cpu
-                Thread.sleep(10);
+                timer.pushBack(frameDelta);
+            	Thread.sleep(10);
             } else {
                 pollMouse();
                 pollKeyboard();
@@ -351,7 +363,9 @@ public class GameWorld {
 
         GL11.glPushMatrix();
         GL11.glLoadIdentity();
-        GL11.glTranslatef(hero.getPosition(0), hero.getPosition(1), hero.getPosition(2));
+        GL11.glTranslatef(hero.getPosition(0)+targetX, hero.getPosition(1)-zoom, hero.getPosition(2));
+        GL11.glRotatef(rotate, 0, 0, 1);
+        GL11.glTranslatef(-targetX, 0, 0);
         map.draw();
         GL11.glPopMatrix();
 
@@ -519,6 +533,8 @@ public class GameWorld {
         if (Mouse.isButtonDown(0)) { 		// Left click
             mouse = getMousePosition(Mouse.getX(), Mouse.getY());
             System.out.println(mouse[0] + ", " + mouse[1] + ", " + mouse[2]);
+            targetX = mouse[0];
+            targetZ = mouse[2];
             //	hero.setTargetVect(mouse[0], mouse[1], mouse[2]);
         }
     }
@@ -551,6 +567,20 @@ public class GameWorld {
             if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
                 hero.changePositionX(-hero.movementRate);
             }
+        }
+        
+
+        if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
+            rotate += 1;
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
+            rotate -= 1;
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_R)) {
+            zoom -= .1;
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_T)) {
+            zoom += .1;
         }
     }
 

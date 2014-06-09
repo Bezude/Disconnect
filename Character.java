@@ -18,7 +18,7 @@ public abstract class Character extends WorldEntity {
 	public Character() {
 		attributes = new ArrayList<Attribute>();
 		
-		movementRate = 0.025f;
+		movementRate = 0.1f;
 		currentDirectionVect = new float[3];
 		targetDirectionVect = new float[3];
 		

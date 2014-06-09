@@ -18,4 +18,8 @@ public class Timer
 		lastCheckTime = temp;
 		return delta;
 	}
+	
+	public void pushBack(long howFar) {
+		lastCheckTime -= howFar;
+	}
 }
