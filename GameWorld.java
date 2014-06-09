@@ -582,6 +582,12 @@ public class GameWorld {
         if (Keyboard.isKeyDown(Keyboard.KEY_T)) {
             zoom += .1;
         }
+        if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+            zoom = 0;
+            rotate = 0;
+            targetX = 10;
+            targetZ = 4;
+        }
     }
 
     static public float[] getMousePosition(int mouseX, int mouseY) {
