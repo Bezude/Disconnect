@@ -93,7 +93,7 @@ public class Map {
 		GL11.glEnd();// */
 	}
 	
-	public Vec2 project(double lamda, double phi) {
+	public static Vec2 project(double lamda, double phi) {
 		Vec2 projected = new Vec2();
 		// map -125 to -65 : 0 to 16
 		projected.x = (float)(((lamda+125)/60)*16);

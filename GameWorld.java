@@ -261,7 +261,7 @@ public class GameWorld {
                 pollMouse();
                 pollKeyboard();
                 updateMap();
-                drawEntities();
+                //drawEntities();
                 Display.update();
             }
 
@@ -347,6 +347,16 @@ public class GameWorld {
 
     public void drawEntities() {
         hero.draw();
+        if (lessthantwoyear) {
+        	GL11.glColor3d(0d, 1d, 0d);
+            for (int i = 0; i < fdata.size(); i++) {
+                String[] temp = new String[25];
+                temp = fdata.get(i);
+                if (Integer.parseInt(temp[iclevel]) == 3) {
+                    hero.drawPyramid(Double.parseDouble(temp[longitude]),Double.parseDouble(temp[latitude]));
+                }
+            }
+        }
     }
 
     public boolean toggle(boolean var) {
@@ -376,6 +386,7 @@ public class GameWorld {
         GL11.glRotatef(rotateZ, 1, 0, 0);
         GL11.glTranslatef(-targetX, 0, -targetZ);
         map.draw();
+        drawEntities();
         GL11.glPopMatrix();
 
         setGraphicsMode("2D");
