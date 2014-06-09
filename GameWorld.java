@@ -411,62 +411,74 @@ public class GameWorld {
             } else if (mousex > width - 295 && mousex < width - 30) {
                 if (height - mousey > 5 && height - mousey < 18) {
                     lessthantwoyear = toggle(lessthantwoyear);
-                    if (!lessthantwoyear) {
-                        for (int i = 0; i < fdata.size(); i++) {
-                            String[] temp = new String[25];
-                            temp = fdata.get(i);
-                            if (Integer.parseInt(temp[iclevel]) == 3) fdata.remove(i);
-                        }
-                    }
                 } else if (height - mousey > 20 && height - mousey < 33) {
                     twoyear = toggle(twoyear);
-                    if (!twoyear) {
-                        for (int i = 0; i < fdata.size(); i++) {
-                            String[] temp = new String[25];
-                            temp = fdata.get(i);
-                            if (Integer.parseInt(temp[iclevel]) == 2) fdata.remove(i);
-                        }
-                    }
                 } else if (height - mousey > 35 && height - mousey < 48) {
                     fouryear = toggle(fouryear);
-                    if (!fouryear) {
-                        for (int i = 0; i < fdata.size(); i++) {
-                            String[] temp = new String[25];
-                            temp = fdata.get(i);
-                            if (Integer.parseInt(temp[iclevel]) == 1) fdata.remove(i);
-                        }
-                    }
                 }
-            } else if (mousex > width - 430 && mousex < width - 300 && height - mousey > 4 && height - mousey < 19) {
+            } else if (mousex > width - 460 && mousex < width - 300 && height - mousey > 4 && height - mousey < 19) {
                 morefilteroptions = toggle(morefilteroptions);
             } else if (mousex > width - 462 && mousex < width - 300 && morefilteroptions) {
                 if (height - mousey > 18 && height - mousey < 33) {
                     hasmedical = toggle(hasmedical);
-                    if (!hasmedical) {
-                        for (int i = 0; i < fdata.size(); i++) {
-                            String[] temp = new String[25];
-                            temp = fdata.get(i);
-                            if (Integer.parseInt(temp[medical]) > 1) fdata.remove(i);
-                        }
-                    }
                 } else if (height - mousey > 35 && height - mousey < 48) {
                     publicschool = toggle(publicschool);
-                    if (!publicschool) {
-                        for (int i = 0; i < fdata.size(); i++) {
-                            String[] temp = new String[25];
-                            temp = fdata.get(i);
-                            if (Integer.parseInt(temp[control]) == 1) fdata.remove(i);
-                        }
-                    }
                 } else if (height - mousey > 50 && height - mousey < 63) {
                     privateschool = toggle(privateschool);
-                    if (!privateschool) {
-                        for (int i = 0; i < fdata.size(); i++) {
-                            String[] temp = new String[25];
-                            temp = fdata.get(i);
-                            if (Integer.parseInt(temp[control]) != 1) fdata.remove(i);
-                        }
-                    }
+                }
+            }
+        }
+        if (!twoyear) {
+            for (int i = 0; i < fdata.size(); i++) {
+                String[] temp = new String[25];
+                temp = fdata.get(i);
+                if (Integer.parseInt(temp[iclevel]) == 2) {
+                    fdata.remove(i);
+                }
+            }
+        }
+        if (!fouryear) {
+            for (int i = 0; i < fdata.size(); i++) {
+                String[] temp = new String[25];
+                temp = fdata.get(i);
+                if (Integer.parseInt(temp[iclevel]) == 1) {
+                    fdata.remove(i);
+                }
+            }
+        }
+        if (!lessthantwoyear) {
+            for (int i = 0; i < fdata.size(); i++) {
+                String[] temp = new String[25];
+                temp = fdata.get(i);
+                if (Integer.parseInt(temp[iclevel]) == 3) {
+                    fdata.remove(i);
+                }
+            }
+        }
+        if (!privateschool) {
+            for (int i = 0; i < fdata.size(); i++) {
+                String[] temp = new String[25];
+                temp = fdata.get(i);
+                if (Integer.parseInt(temp[control]) != 1) {
+                    fdata.remove(i);
+                }
+            }
+        }
+        if (!publicschool) {
+            for (int i = 0; i < fdata.size(); i++) {
+                String[] temp = new String[25];
+                temp = fdata.get(i);
+                if (Integer.parseInt(temp[control]) == 1) {
+                    fdata.remove(i);
+                }
+            }
+        }
+        if (!hasmedical) {
+            for (int i = 0; i < fdata.size(); i++) {
+                String[] temp = new String[25];
+                temp = fdata.get(i);
+                if (Integer.parseInt(temp[medical]) > 1) {
+                    fdata.remove(i);
                 }
             }
         }

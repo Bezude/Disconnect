@@ -44,10 +44,10 @@ public class Map {
 		lat49.add(project(-65,49));
 		latLines.add(lat49);
 		
-		// 32.5344¡ N, 117.1228¡ W Cali-Mexico corner
-		// 48.9881¡ N, 122.7436¡ W WA-Canada corner
-		// 47.3765¡ N, 68.3253¡ W ME-Canada corner
-		// 25.1067¡ N, 80.4300¡ W Key Largo Florida
+		// 32.5344 N, 117.1228 W Cali-Mexico corner
+		// 48.9881 N, 122.7436 W WA-Canada corner
+		// 47.3765 N, 68.3253 W ME-Canada corner
+		// 25.1067 N, 80.4300 W Key Largo Florida
 	}
 
 	public void draw() {
@@ -100,7 +100,7 @@ public class Map {
 		// map 25 to 50 : 8 to 0
 		projected.y = (float)(8-(((phi-25)/25)*8));
 		
-//		double phi0 = Math.toRadians(25);  // 32.7150¡ N, 117.1625¡ W San Diego
+//		double phi0 = Math.toRadians(25);  // 32.7150ï¿½ N, 117.1625ï¿½ W San Diego
 //		double phi1 = Math.toRadians(25);
 //		double phi2 = Math.toRadians(50);
 //		double lamda0 = Math.toRadians(-125);
