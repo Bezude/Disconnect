@@ -649,8 +649,8 @@ public class GameWorld {
         if (Mouse.isButtonDown(0)) { 		// Left click
             mouse = getMousePosition(Mouse.getX(), Mouse.getY());
             System.out.println(mouse[0] + ", " + mouse[1] + ", " + mouse[2]);
-            targetX = mouse[0];
-            targetZ = mouse[2];
+            //targetX = mouse[0];
+            //targetZ = mouse[2];
             //	hero.setTargetVect(mouse[0], mouse[1], mouse[2]);
         }
     }
