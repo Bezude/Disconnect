@@ -347,14 +347,58 @@ public class GameWorld {
 
     public void drawEntities() {
         hero.draw();
-        if (lessthantwoyear) {
-        	GL11.glColor3d(0d, 1d, 0d);
             for (int i = 0; i < fdata.size(); i++) {
                 String[] temp = new String[25];
                 temp = fdata.get(i);
-                if (Integer.parseInt(temp[iclevel]) == 3) {
-                    hero.drawPyramid(Double.parseDouble(temp[longitude]),Double.parseDouble(temp[latitude]));
+                if (lessthantwoyear) {
+	                if (Integer.parseInt(temp[iclevel]) == 3) {
+	                	if(Integer.parseInt(temp[control]) == 1) {
+	                		GL11.glColor3d(0.5d, 0.8d, 0d);
+	                		hero.drawPyramid(Double.parseDouble(temp[longitude]),Double.parseDouble(temp[latitude]));
+	                	}
+	                	else{
+	                		GL11.glColor3d(0d, 0.8d, 0.5d);
+	                		hero.drawCube(Double.parseDouble(temp[longitude]),Double.parseDouble(temp[latitude]));
+	                	}
+	                    
+	                }
                 }
+                if (twoyear) {
+	                if (Integer.parseInt(temp[iclevel]) == 2) {
+	                	if(Integer.parseInt(temp[control]) == 1) {
+	                		GL11.glColor3d(1.0d, 0.8d, 0d);
+	                		hero.drawPyramid(Double.parseDouble(temp[longitude]),Double.parseDouble(temp[latitude]));
+	                	}
+	                	else{
+	                		GL11.glColor3d(0.92d, 0.87d, 0.56d);
+	                		hero.drawCube(Double.parseDouble(temp[longitude]),Double.parseDouble(temp[latitude]));
+	                	}
+	                }
+                }
+                if (fouryear) {
+	                if (Integer.parseInt(temp[iclevel]) == 1) {
+	                	if(Integer.parseInt(temp[control]) == 1) {
+	                		GL11.glColor3d(0.8d, 0.5d, 0d);
+	                		hero.drawPyramid(Double.parseDouble(temp[longitude]),Double.parseDouble(temp[latitude]));
+	                	}
+	                	else{
+	                		GL11.glColor3d(0.8d, 0d, 0.3d);
+	                		hero.drawCube(Double.parseDouble(temp[longitude]),Double.parseDouble(temp[latitude]));
+	                	}
+	                }
+                }
+            }
+        
+        if (twoyear) {
+            for (int i = 0; i < fdata.size(); i++) {
+                String[] temp = new String[25];
+                temp = fdata.get(i);
+            }
+        }
+        if (fouryear) {
+            for (int i = 0; i < fdata.size(); i++) {
+                String[] temp = new String[25];
+                temp = fdata.get(i);
             }
         }
     }
