@@ -187,7 +187,8 @@ public class GameWorld {
     private Map map;
     float mouse[];
     
-    float rotate;
+    float rotateX;
+    float rotateZ;
     static float SWOOP_DUR;
     float targetX;
     float targetZ;
@@ -221,7 +222,8 @@ public class GameWorld {
         pos = new float[3];
         r = new float[3];
         
-        rotate = 0;
+        rotateX = 0;
+        rotateZ = 0;
         targetX = 10;
         targetZ = 4;
         zoom = 0;
@@ -363,9 +365,10 @@ public class GameWorld {
 
         GL11.glPushMatrix();
         GL11.glLoadIdentity();
-        GL11.glTranslatef(hero.getPosition(0)+targetX, hero.getPosition(1)-zoom, hero.getPosition(2));
-        GL11.glRotatef(rotate, 0, 0, 1);
-        GL11.glTranslatef(-targetX, 0, 0);
+        GL11.glTranslatef(hero.getPosition(0)+targetX, hero.getPosition(1)-zoom, hero.getPosition(2)+targetZ);
+        GL11.glRotatef(rotateX, 0, 0, 1);
+        GL11.glRotatef(rotateZ, 1, 0, 0);
+        GL11.glTranslatef(-targetX, 0, -targetZ);
         map.draw();
         GL11.glPopMatrix();
 
@@ -571,10 +574,16 @@ public class GameWorld {
         
 
         if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
-            rotate += 1;
+            rotateZ += 1;
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-            rotate -= 1;
+            rotateZ -= 1;
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_F)) {
+            rotateX += 1;
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_C)) {
+            rotateX -= 1;
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_R)) {
             zoom -= .1;
@@ -584,7 +593,8 @@ public class GameWorld {
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
             zoom = 0;
-            rotate = 0;
+            rotateZ = 0;
+            rotateX = 0;
             targetX = 10;
             targetZ = 4;
         }
