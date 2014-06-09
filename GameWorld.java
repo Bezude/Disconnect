@@ -12,6 +12,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
+import org.jbox2d.common.Vec2;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -42,6 +43,8 @@ public class GameWorld {
     boolean intown = true;
     boolean inrural = true;
     boolean hbc = true;
+    boolean masters = true;
+    boolean bachelors = true;
 
     public static int instnm = 0;
     public static int address = 1;
@@ -192,7 +195,7 @@ public class GameWorld {
     private Hero hero;
     private Map map;
     float mouse[];
-    
+
     float rotateX;
     float rotateZ;
     static float SWOOP_DUR;
@@ -227,7 +230,7 @@ public class GameWorld {
 
         pos = new float[3];
         r = new float[3];
-        
+
         rotateX = 0;
         rotateZ = 0;
         targetX = 10;
@@ -256,7 +259,7 @@ public class GameWorld {
             frameDelta = timer.getNanoDelta(); //This value will get passed to all the updates that are time dependent.
             if (frameDelta < FRAME_LENGTH_MINIMUM) { //If very little time has passed since the last update, yield the cpu
                 timer.pushBack(frameDelta);
-            	Thread.sleep(10);
+                Thread.sleep(10);
             } else {
                 pollMouse();
                 pollKeyboard();
@@ -425,7 +428,7 @@ public class GameWorld {
 
         GL11.glPushMatrix();
         GL11.glLoadIdentity();
-        GL11.glTranslatef(hero.getPosition(0)+targetX, hero.getPosition(1)-zoom, hero.getPosition(2)+targetZ);
+        GL11.glTranslatef(hero.getPosition(0) + targetX, hero.getPosition(1) - zoom, hero.getPosition(2) + targetZ);
         GL11.glRotatef(rotateX, 0, 0, 1);
         GL11.glRotatef(rotateZ, 1, 0, 0);
         GL11.glTranslatef(-targetX, 0, -targetZ);
@@ -469,6 +472,8 @@ public class GameWorld {
             checkbox(170, 2 + (15 * 6), insuburbs);
             checkbox(170, 2 + (15 * 7), intown);
             checkbox(170, 2 + (15 * 8), inrural);
+            checkbox(170, 2 + (15 * 9), masters);
+            checkbox(170, 2 + (15 * 10), bachelors);
 
         }
         checkbox(0, 2 + (15 * 0), lessthantwoyear);
@@ -526,9 +531,12 @@ public class GameWorld {
                     intown = toggle(intown);
                 } else if (height - mousey > 125 && height - mousey < 138) {
                     inrural = toggle(inrural);
+                } else if (height - mousey > 140 && height - mousey < 153) {
+                    masters = toggle(masters);
+                } else if (height - mousey > 155 && height - mousey < 168) {
+                    bachelors = toggle(bachelors);
                 }
-            }
-            else if (mousex > width - 90 && mousex < width - 10 && height - mousey > 20 && height - mousey < 40) {
+            } else if (mousex > width - 90 && mousex < width - 10 && height - mousey > 20 && height - mousey < 40) {
                 fouryear = true;
                 twoyear = true;
                 lessthantwoyear = true;
@@ -540,6 +548,8 @@ public class GameWorld {
                 intown = true;
                 inrural = true;
                 hbc = true;
+                masters = true;
+                bachelors = true;
                 fdata.clear();
                 for (int i = 1; i < 7504; i++) {
                     fdata.add(universities[i]);
@@ -646,7 +656,25 @@ public class GameWorld {
                 }
             }
         }
-
+        if (!masters) {
+            for (int i = 0; i < fdata.size(); i++) {
+                String[] temp = new String[25];
+                temp = fdata.get(i);
+                if (Integer.parseInt(temp[category]) == 1 || Integer.parseInt(temp[category]) > 2) {
+                    fdata.remove(i);
+                }
+            }
+        }
+        if (!bachelors) {
+            for (int i = 0; i < fdata.size(); i++) {
+                String[] temp = new String[25];
+                temp = fdata.get(i);
+                if (Integer.parseInt(temp[category]) >= 2) {
+                    fdata.remove(i);
+                }
+            }
+        }
+        
 //        GL11.glDisable(GL11.GL_BLEND);
 //        GL11.glEnable(GL11.GL_BLEND);
 //        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -666,6 +694,8 @@ public class GameWorld {
             font.drawString(width - 445, 5 + (15 * 6), "In Suburbs", Color.green);
             font.drawString(width - 445, 5 + (15 * 7), "In Towns", Color.green);
             font.drawString(width - 445, 5 + (15 * 8), "In Rural Areas", Color.green);
+            font.drawString(width - 445, 5 + (15 * 9), "Masters and Higher", Color.green);
+            font.drawString(width - 445, 5 + (15 * 10), "Bachelors and Higher", Color.green);
         }
         for (int i = 0; i < fdata.size(); i++) {
             if (5 + (15 * (i + 3)) - ((barpos - (2 + (15 * 3))) * 210) > 49) {
@@ -684,6 +714,49 @@ public class GameWorld {
             font.drawString(0, 20 * 2, instinfo[city] + ", " + instinfo[stateabr] + " " + instinfo[zipcode], Color.white);
             font.drawString(0, 20 * 3, instinfo[webaddress], Color.white);
             font.drawString(0, 20 * 4, instinfo[countyname], Color.white);
+            if (Integer.parseInt(instinfo[control]) == 1) {
+                font.drawString(0, 20 * 5, "Public College/University", Color.white);
+            } else if (Integer.parseInt(instinfo[control]) != 1){
+                font.drawString(0, 20 * 5, "Private College/University", Color.white);
+            }
+            switch (Integer.parseInt(instinfo[locale])) {
+                case 11:
+                    font.drawString(0, 20 * 6, "Located in a city.", Color.white);
+                    break;
+                case 12:
+                    font.drawString(0, 20 * 6, "Located in a city.", Color.white);
+                    break;
+                case 13:
+                    font.drawString(0, 20 * 6, "Located in a city.", Color.white);
+                    break;
+                case 21:
+                    font.drawString(0, 20 * 6, "Located in a suburb.", Color.white);
+                    break;
+                case 22:
+                    font.drawString(0, 20 * 6, "Located in a suburb.", Color.white);
+                    break;
+                case 23:
+                    font.drawString(0, 20 * 6, "Located in a suburb.", Color.white);
+                    break;
+                case 31:
+                    font.drawString(0, 20 * 6, "Located in a town.", Color.white);
+                    break;
+                case 32:
+                    font.drawString(0, 20 * 6, "Located in a town.", Color.white);
+                    break;
+                case 33:
+                    font.drawString(0, 20 * 6, "Located in a town.", Color.white);
+                    break;
+                default:
+                    font.drawString(0, 20 * 6, "Located in a rural area.", Color.white);
+                    break;
+            }
+            if (Integer.parseInt(instinfo[hbcu]) == 1) {
+                font.drawString(0, 20 * 7, "This is a Historically Black College or University", Color.white);
+            }
+            if (Integer.parseInt(instinfo[opeflag]) >= 1) {
+                font.drawString(0, 20 * 8, "This school offers Title IV aid of some sort.", Color.white);
+            }
         }
         GL11.glDisable(GL11.GL_BLEND);
 
@@ -736,7 +809,7 @@ public class GameWorld {
                 hero.changePositionX(-hero.movementRate);
             }
         }
-        
+
 
         if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
             rotateZ += 1;
