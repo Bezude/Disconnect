@@ -62,7 +62,7 @@ public class Map {
 			}
 			GL11.glEnd();
 		}
-		
+		/*
 		for(int j = 0; j < latLines.size(); j++) {
 			GL11.glBegin(GL11.GL_LINE_STRIP);
 			GL11.glColor3d(1.0, 0.0, 0.0);
