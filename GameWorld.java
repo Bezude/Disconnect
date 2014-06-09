@@ -455,7 +455,7 @@ public class GameWorld {
         GL11.glEnd();
         if (morefilteroptions) {
             GL11.glBegin(GL11.GL_QUADS);
-            GL11.glColor4d(1, 1, 1, 0.70);
+            GL11.glColor4d(0, 0, 0, 0.70);
             GL11.glVertex2d(width - 465, 5);
             GL11.glVertex2d(width - 300, 5);
             GL11.glVertex2d(width - 300, height - 5);
@@ -499,7 +499,7 @@ public class GameWorld {
         if (Mouse.isButtonDown(0)) {
             if (mousex > width - 22 && mousex < width - 8 && height - mousey < 600 && height - mousey > 50) {
                 barpos = height - mousey - 10;
-            } else if (mousex > width - 295 && mousex < width - 50) {
+            } else if (mousex > width - 295 && mousex < width - 100) {
                 if (height - mousey > 5 && height - mousey < 18) {
                     lessthantwoyear = toggle(lessthantwoyear);
                 } else if (height - mousey > 20 && height - mousey < 33) {
@@ -540,9 +540,6 @@ public class GameWorld {
                 intown = true;
                 inrural = true;
                 hbc = true;
-                for (int i = 0; i < instinfo.length; i++) {
-                    instinfo[i] = null;
-                }
                 fdata.clear();
                 for (int i = 1; i < 7504; i++) {
                     fdata.add(universities[i]);
