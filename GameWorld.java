@@ -5,19 +5,13 @@
  *
  */
 
-import java.util.concurrent.TimeUnit;
-
 import au.com.bytecode.opencsv.CSV;
 import au.com.bytecode.opencsv.CSVReadProc;
 import java.awt.Font;
-//import java.io.InputStream;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.TrueTypeFont;
-//import org.newdawn.slick.util.ResourceLoader;
-
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-
+import java.util.LinkedList;
+import java.util.concurrent.TimeUnit;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -26,9 +20,12 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.*;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.TrueTypeFont;
 
 public class GameWorld {
 
+    LinkedList<String[]> fdata = new LinkedList<String[]>();
     private boolean morefilteroptions = false;
     private int offset = 0;
     private int barpos = 2 + (15 * 3);
@@ -38,8 +35,8 @@ public class GameWorld {
     boolean lessthantwoyear = true;
     boolean hasmedical = true;
     boolean publicschool = true;
-    boolean privateschool = true;   
-    
+    boolean privateschool = true;
+
     public static int instnm = 0;
     public static int address = 1;
     public static int city = 2;
@@ -298,8 +295,10 @@ public class GameWorld {
                 for (int i = 0; i < 25; i++) {
                     universities[rowIndex][i] = values[i];
                 }
+                fdata.add(values);
             }
         });
+        fdata.remove();
         setGraphicsMode("3D");
         /*
          GL11.glMatrixMode(GL11.GL_PROJECTION);
@@ -412,22 +411,62 @@ public class GameWorld {
             } else if (mousex > width - 295 && mousex < width - 30) {
                 if (height - mousey > 5 && height - mousey < 18) {
                     lessthantwoyear = toggle(lessthantwoyear);
-                }
-                else if (height - mousey > 20 && height - mousey < 33) {
+                    if (!lessthantwoyear) {
+                        for (int i = 0; i < fdata.size(); i++) {
+                            String[] temp = new String[25];
+                            temp = fdata.get(i);
+                            if (Integer.parseInt(temp[iclevel]) == 3) fdata.remove(i);
+                        }
+                    }
+                } else if (height - mousey > 20 && height - mousey < 33) {
                     twoyear = toggle(twoyear);
-                }
-                else if (height - mousey > 35 && height - mousey < 48) {
+                    if (!twoyear) {
+                        for (int i = 0; i < fdata.size(); i++) {
+                            String[] temp = new String[25];
+                            temp = fdata.get(i);
+                            if (Integer.parseInt(temp[iclevel]) == 2) fdata.remove(i);
+                        }
+                    }
+                } else if (height - mousey > 35 && height - mousey < 48) {
                     fouryear = toggle(fouryear);
+                    if (!fouryear) {
+                        for (int i = 0; i < fdata.size(); i++) {
+                            String[] temp = new String[25];
+                            temp = fdata.get(i);
+                            if (Integer.parseInt(temp[iclevel]) == 1) fdata.remove(i);
+                        }
+                    }
                 }
             } else if (mousex > width - 430 && mousex < width - 300 && height - mousey > 4 && height - mousey < 19) {
                 morefilteroptions = toggle(morefilteroptions);
             } else if (mousex > width - 462 && mousex < width - 300 && morefilteroptions) {
                 if (height - mousey > 18 && height - mousey < 33) {
                     hasmedical = toggle(hasmedical);
+                    if (!hasmedical) {
+                        for (int i = 0; i < fdata.size(); i++) {
+                            String[] temp = new String[25];
+                            temp = fdata.get(i);
+                            if (Integer.parseInt(temp[medical]) > 1) fdata.remove(i);
+                        }
+                    }
                 } else if (height - mousey > 35 && height - mousey < 48) {
                     publicschool = toggle(publicschool);
+                    if (!publicschool) {
+                        for (int i = 0; i < fdata.size(); i++) {
+                            String[] temp = new String[25];
+                            temp = fdata.get(i);
+                            if (Integer.parseInt(temp[control]) == 1) fdata.remove(i);
+                        }
+                    }
                 } else if (height - mousey > 50 && height - mousey < 63) {
                     privateschool = toggle(privateschool);
+                    if (!privateschool) {
+                        for (int i = 0; i < fdata.size(); i++) {
+                            String[] temp = new String[25];
+                            temp = fdata.get(i);
+                            if (Integer.parseInt(temp[control]) != 1) fdata.remove(i);
+                        }
+                    }
                 }
             }
         }
@@ -445,9 +484,11 @@ public class GameWorld {
             font.drawString(width - 445, 5 + (15 * 2), "Public Colleges", Color.green);
             font.drawString(width - 445, 5 + (15 * 3), "Private Colleges", Color.green);
         }
-        for (int i = 0; i < 7503; i++) {
+        for (int i = 0; i < fdata.size(); i++) {
             if (5 + (15 * (i + 3)) - ((barpos - (2 + (15 * 3))) * 210) > 49) {
-                font.drawString(width - 280, 5 + (15 * (i + 3)) - ((barpos - (2 + (15 * 3))) * 210), universities[i + 1][0], Color.blue);
+                String[] temp = new String[25];
+                temp = fdata.get(i);
+                font.drawString(width - 280, 5 + (15 * (i + 3)) - ((barpos - (2 + (15 * 3))) * 210), temp[0], Color.blue);
             }
         }
         GL11.glDisable(GL11.GL_BLEND);
