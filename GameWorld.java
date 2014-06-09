@@ -25,6 +25,7 @@ import org.newdawn.slick.TrueTypeFont;
 
 public class GameWorld {
 
+    private String[] instinfo = new String[25];
     LinkedList<String[]> fdata = new LinkedList<String[]>();
     private boolean morefilteroptions = false;
     private int offset = 0;
@@ -36,6 +37,11 @@ public class GameWorld {
     boolean hasmedical = true;
     boolean publicschool = true;
     boolean privateschool = true;
+    boolean incity = true;
+    boolean insuburbs = true;
+    boolean intown = true;
+    boolean inrural = true;
+    boolean hbc = true;
 
     public static int instnm = 0;
     public static int address = 1;
@@ -272,9 +278,9 @@ public class GameWorld {
         GL11.glBegin(GL11.GL_QUADS);
         GL11.glColor4d(1, 1, 1, 1);
         GL11.glVertex2d(x1, y1);
-        GL11.glVertex2d(x1, y2);
         GL11.glVertex2d(x2, y1);
         GL11.glVertex2d(x2, y2);
+        GL11.glVertex2d(x1, y2);
         GL11.glEnd();
         if (check) {
             GL11.glBegin(GL11.GL_LINES);
@@ -403,6 +409,12 @@ public class GameWorld {
             checkbox(170, 2 + (15 * 1), hasmedical);
             checkbox(170, 2 + (15 * 2), publicschool);
             checkbox(170, 2 + (15 * 3), privateschool);
+            checkbox(170, 2 + (15 * 4), hbc);
+            checkbox(170, 2 + (15 * 5), incity);
+            checkbox(170, 2 + (15 * 6), insuburbs);
+            checkbox(170, 2 + (15 * 7), intown);
+            checkbox(170, 2 + (15 * 8), inrural);
+
         }
         checkbox(0, 2 + (15 * 0), lessthantwoyear);
         checkbox(0, 2 + (15 * 1), twoyear);
@@ -420,12 +432,19 @@ public class GameWorld {
         GL11.glVertex2d(width - 8, barpos + 40);
         GL11.glVertex2d(width - 22, barpos + 40);
         GL11.glEnd();
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glColor4d(1, 1, 1, 1);
+        GL11.glVertex2d(width - 90, 20);
+        GL11.glVertex2d(width - 10, 20);
+        GL11.glVertex2d(width - 10, 40);
+        GL11.glVertex2d(width - 90, 40);
+        GL11.glEnd();
         int mousex = Mouse.getX();
         int mousey = Mouse.getY();
         if (Mouse.isButtonDown(0)) {
             if (mousex > width - 22 && mousex < width - 8 && height - mousey < 600 && height - mousey > 50) {
                 barpos = height - mousey - 10;
-            } else if (mousex > width - 295 && mousex < width - 30) {
+            } else if (mousex > width - 295 && mousex < width - 50) {
                 if (height - mousey > 5 && height - mousey < 18) {
                     lessthantwoyear = toggle(lessthantwoyear);
                 } else if (height - mousey > 20 && height - mousey < 33) {
@@ -442,6 +461,46 @@ public class GameWorld {
                     publicschool = toggle(publicschool);
                 } else if (height - mousey > 50 && height - mousey < 63) {
                     privateschool = toggle(privateschool);
+                } else if (height - mousey > 65 && height - mousey < 78) {
+                    hbc = toggle(hbc);
+                } else if (height - mousey > 80 && height - mousey < 93) {
+                    incity = toggle(incity);
+                } else if (height - mousey > 95 && height - mousey < 108) {
+                    insuburbs = toggle(insuburbs);
+                } else if (height - mousey > 110 && height - mousey < 123) {
+                    intown = toggle(intown);
+                } else if (height - mousey > 125 && height - mousey < 138) {
+                    inrural = toggle(inrural);
+                }
+            }
+            else if (mousex > width - 90 && mousex < width - 10 && height - mousey > 20 && height - mousey < 40) {
+                fouryear = true;
+                twoyear = true;
+                lessthantwoyear = true;
+                hasmedical = true;
+                publicschool = true;
+                privateschool = true;
+                incity = true;
+                insuburbs = true;
+                intown = true;
+                inrural = true;
+                hbc = true;
+                for (int i = 0; i < instinfo.length; i++) {
+                    instinfo[i] = null;
+                }
+                fdata.clear();
+                for (int i = 1; i < 7504; i++) {
+                    fdata.add(universities[i]);
+                }
+            }
+        }
+
+        if (!lessthantwoyear) {
+            for (int i = 0; i < fdata.size(); i++) {
+                String[] temp = new String[25];
+                temp = fdata.get(i);
+                if (Integer.parseInt(temp[iclevel]) == 3) {
+                    fdata.remove(i);
                 }
             }
         }
@@ -463,20 +522,11 @@ public class GameWorld {
                 }
             }
         }
-        if (!lessthantwoyear) {
+        if (!hasmedical) {
             for (int i = 0; i < fdata.size(); i++) {
                 String[] temp = new String[25];
                 temp = fdata.get(i);
-                if (Integer.parseInt(temp[iclevel]) == 3) {
-                    fdata.remove(i);
-                }
-            }
-        }
-        if (!privateschool) {
-            for (int i = 0; i < fdata.size(); i++) {
-                String[] temp = new String[25];
-                temp = fdata.get(i);
-                if (Integer.parseInt(temp[control]) != 1) {
+                if (Integer.parseInt(temp[medical]) > 0) {
                     fdata.remove(i);
                 }
             }
@@ -490,20 +540,67 @@ public class GameWorld {
                 }
             }
         }
-        if (!hasmedical) {
+        if (!privateschool) {
             for (int i = 0; i < fdata.size(); i++) {
                 String[] temp = new String[25];
                 temp = fdata.get(i);
-                if (Integer.parseInt(temp[medical]) > 1) {
+                if (Integer.parseInt(temp[control]) != 1) {
                     fdata.remove(i);
                 }
             }
         }
+        if (!hbc) {
+            for (int i = 0; i < fdata.size(); i++) {
+                String[] temp = new String[25];
+                temp = fdata.get(i);
+                if (Integer.parseInt(temp[hbcu]) == 1) {
+                    fdata.remove(i);
+                }
+            }
+        }
+        if (!incity) {
+            for (int i = 0; i < fdata.size(); i++) {
+                String[] temp = new String[25];
+                temp = fdata.get(i);
+                if (Integer.parseInt(temp[locale]) >= 11 && Integer.parseInt(temp[locale]) <= 13) {
+                    fdata.remove(i);
+                }
+            }
+        }
+        if (!insuburbs) {
+            for (int i = 0; i < fdata.size(); i++) {
+                String[] temp = new String[25];
+                temp = fdata.get(i);
+                if (Integer.parseInt(temp[locale]) >= 21 && Integer.parseInt(temp[locale]) <= 23) {
+                    fdata.remove(i);
+                }
+            }
+        }
+        if (!intown) {
+            for (int i = 0; i < fdata.size(); i++) {
+                String[] temp = new String[25];
+                temp = fdata.get(i);
+                if (Integer.parseInt(temp[locale]) >= 31 && Integer.parseInt(temp[locale]) <= 33) {
+                    fdata.remove(i);
+                }
+            }
+        }
+        if (!inrural) {
+            for (int i = 0; i < fdata.size(); i++) {
+                String[] temp = new String[25];
+                temp = fdata.get(i);
+                if (Integer.parseInt(temp[locale]) >= 41 && Integer.parseInt(temp[locale]) <= 43) {
+                    fdata.remove(i);
+                }
+            }
+        }
+
 //        GL11.glDisable(GL11.GL_BLEND);
 //        GL11.glEnable(GL11.GL_BLEND);
 //        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         Color.white.bind();
+        font.drawString(width - 69, 22, "Reset", Color.gray);
         font.drawString(width - 270, 5, "Less-than-Two Year Colleges", Color.green);
         font.drawString(width - 270, 5 + 15, "Two Year Colleges", Color.green);
         font.drawString(width - 270, 5 + (15 * 2), "Four Year Colleges", Color.green);
@@ -512,13 +609,29 @@ public class GameWorld {
             font.drawString(width - 445, 20, "Offers Medical Degrees", Color.green);
             font.drawString(width - 445, 5 + (15 * 2), "Public Colleges", Color.green);
             font.drawString(width - 445, 5 + (15 * 3), "Private Colleges", Color.green);
+            font.drawString(width - 445, 5 + (15 * 4), "Historically Black Colleges", Color.green);
+            font.drawString(width - 445, 5 + (15 * 5), "In Cities", Color.green);
+            font.drawString(width - 445, 5 + (15 * 6), "In Suburbs", Color.green);
+            font.drawString(width - 445, 5 + (15 * 7), "In Towns", Color.green);
+            font.drawString(width - 445, 5 + (15 * 8), "In Rural Areas", Color.green);
         }
         for (int i = 0; i < fdata.size(); i++) {
             if (5 + (15 * (i + 3)) - ((barpos - (2 + (15 * 3))) * 210) > 49) {
                 String[] temp = new String[25];
                 temp = fdata.get(i);
                 font.drawString(width - 280, 5 + (15 * (i + 3)) - ((barpos - (2 + (15 * 3))) * 210), temp[0], Color.blue);
+                if (Mouse.isButtonDown(0) && mousex > width - 280 && mousex < width - 20 && height - mousey > 5 + (15 * (i + 3)) - ((barpos - (2 + (15 * 3))) * 210)
+                        && height - mousey < 5 + (15 * (i + 3)) - ((barpos - (2 + (15 * 3))) * 210) + 15) {
+                    instinfo = temp;
+                }
             }
+        }
+        if (instinfo[0] != null && !instinfo[0].isEmpty()) {
+            font.drawString(0, 0, instinfo[instnm], Color.white);
+            font.drawString(0, 20 * 1, instinfo[address], Color.white);
+            font.drawString(0, 20 * 2, instinfo[city] + ", " + instinfo[stateabr] + " " + instinfo[zipcode], Color.white);
+            font.drawString(0, 20 * 3, instinfo[webaddress], Color.white);
+            font.drawString(0, 20 * 4, instinfo[countyname], Color.white);
         }
         GL11.glDisable(GL11.GL_BLEND);
 
