@@ -59,77 +59,85 @@ public class Hero extends Character {
 		GL11.glPopMatrix();	// */	
 	}
 	
-	public void drawPyramid(double lamda, double phi) {
-		
+	public void drawPyramid(double lamda, double phi, boolean oscillate, long deltaTime) {
+		double sec = (double)(deltaTime/10000000);
+		float offset = (float)(Math.sin(sec));
+		if(oscillate) {
+			System.out.println(sec);
+		}
 		Vec2 v = Map.project(lamda, phi);
 		//System.out.println("X: "+v.x+", Y: "+v.y);
 		GL11.glBegin(GL11.GL_QUADS);	//Back
-			GL11.glVertex3d(  v.x+a,  a, v.y+0d );
-			GL11.glVertex3d( v.x-a,  a, v.y+0d );
-			GL11.glVertex3d( v.x-a, b, v.y+0d );
-			GL11.glVertex3d(  v.x+a, b, v.y+0d );
+			GL11.glVertex3d(  v.x+a,  oscillate ? offset + a : a, v.y+0d );
+			GL11.glVertex3d( v.x-a,  oscillate ? offset + a : a, v.y+0d );
+			GL11.glVertex3d( v.x-a, oscillate ? offset + b : b, v.y+0d );
+			GL11.glVertex3d(  v.x+a, oscillate ? offset + b : b, v.y+0d );
 		GL11.glEnd();
 		GL11.glBegin(GL11.GL_TRIANGLES); // Top
-			GL11.glVertex3d(  v.x+a,  a,  v.y+0d );
-			GL11.glVertex3d(  v.x+0d,     0d,     v.y-aa );
-			GL11.glVertex3d( v.x-a,  a,  v.y+0d );
+			GL11.glVertex3d(  v.x+a,  oscillate ? offset + a : a,  v.y+0d );
+			GL11.glVertex3d(  v.x+0d,     oscillate ? offset : 0d,     v.y-aa );
+			GL11.glVertex3d( v.x-a,  oscillate ? offset + a : a,  v.y+0d );
 		GL11.glEnd();
 		GL11.glBegin(GL11.GL_TRIANGLES); // Left
-			GL11.glVertex3d( v.x-a,  a, v.y+0d );
-			GL11.glVertex3d(  v.x+0d,     0d,    v.y-aa );
-			GL11.glVertex3d( v.x-a, b, v.y+0d );
+			GL11.glVertex3d( v.x-a,  oscillate ? offset + a : a, v.y+0d );
+			GL11.glVertex3d(  v.x+0d,     oscillate ? offset : 0d,    v.y-aa );
+			GL11.glVertex3d( v.x-a, oscillate ? offset + b : b, v.y+0d );
 		GL11.glEnd();
 		GL11.glBegin(GL11.GL_TRIANGLES); // Bottom
-			GL11.glVertex3d( v.x-a, b, v.y+0d );
-			GL11.glVertex3d(  v.x+0d,     0d,    v.y-aa );
-			GL11.glVertex3d(  v.x+a, b, v.y+0d );
+			GL11.glVertex3d( v.x-a, oscillate ? offset + b : b, v.y+0d );
+			GL11.glVertex3d(  v.x+0d,     oscillate ? offset : 0d,    v.y-aa );
+			GL11.glVertex3d(  v.x+a, oscillate ? offset + b : b, v.y+0d );
 		GL11.glEnd();
 		GL11.glBegin(GL11.GL_TRIANGLES); // Right
-			GL11.glVertex3d(  v.x+a, b, v.y+0d );
-			GL11.glVertex3d(  v.x+0d,     0d,    v.y-aa );
-			GL11.glVertex3d(  v.x+a,  a, v.y+0d );
+			GL11.glVertex3d(  v.x+a, oscillate ? offset + b : b, v.y+0d );
+			GL11.glVertex3d(  v.x+0d,     oscillate ? offset : 0d,    v.y-aa );
+			GL11.glVertex3d(  v.x+a,  oscillate ? offset + a : a, v.y+0d );
 		GL11.glEnd();
 	}
 	
-public void drawCube(double lamda, double phi) {
-		
+public void drawCube(double lamda, double phi, boolean oscillate, long deltaTime) {
+		double sec = (double)(deltaTime/10000000);
+		float offset = (float)(Math.sin(sec));
+		if(oscillate) {
+			System.out.println(sec);
+		}
 		Vec2 v = Map.project(lamda, phi);
 		//System.out.println("X: "+v.x+", Y: "+v.y);
 		GL11.glBegin(GL11.GL_QUADS);	//Back
-			GL11.glVertex3d(  v.x+a,  a, v.y+b );
-			GL11.glVertex3d( v.x-a,  a, v.y+b );
-			GL11.glVertex3d( v.x-a, b, v.y+b );
-			GL11.glVertex3d(  v.x+a, b, v.y+b );
+			GL11.glVertex3d(  v.x+a,  oscillate ? offset + a : a, v.y+b );
+			GL11.glVertex3d( v.x-a,  oscillate ? offset + a : a, v.y+b );
+			GL11.glVertex3d( v.x-a, oscillate ? offset + b : b, v.y+b );
+			GL11.glVertex3d(  v.x+a, oscillate ? offset + b : b, v.y+b );
 		GL11.glEnd();
 		GL11.glBegin(GL11.GL_QUADS);	//Front
-			GL11.glVertex3d(  v.x+a,  a, v.y+a );
-			GL11.glVertex3d( v.x+a,  b, v.y+a );
-			GL11.glVertex3d( v.x-a, b, v.y+a );
-			GL11.glVertex3d(  v.x-a, a, v.y+a );
+			GL11.glVertex3d(  v.x+a,  oscillate ? offset + a : a, v.y+a );
+			GL11.glVertex3d( v.x+a,  oscillate ? offset + b : b, v.y+a );
+			GL11.glVertex3d( v.x-a, oscillate ? offset + b : b, v.y+a );
+			GL11.glVertex3d(  v.x-a, oscillate ? offset + a : a, v.y+a );
 		GL11.glEnd();
 		GL11.glBegin(GL11.GL_QUADS);	//Top
-			GL11.glVertex3d(  v.x+a,  a, v.y-a );
-			GL11.glVertex3d( v.x+a,  a, v.y+a );
-			GL11.glVertex3d( v.x-a, a, v.y+a );
-			GL11.glVertex3d(  v.x-a, a, v.y-a );
+			GL11.glVertex3d(  v.x+a,  oscillate ? offset + a : a, v.y-a );
+			GL11.glVertex3d( v.x+a,  oscillate ? offset + a : a, v.y+a );
+			GL11.glVertex3d( v.x-a, oscillate ? offset + a : a, v.y+a );
+			GL11.glVertex3d(  v.x-a, oscillate ? offset + a : a, v.y-a );
 		GL11.glEnd();
 		GL11.glBegin(GL11.GL_QUADS);	//Bottom
-			GL11.glVertex3d(  v.x+a,  b, v.y-a );
-			GL11.glVertex3d( v.x-a,  b, v.y-a );
-			GL11.glVertex3d( v.x-a, b, v.y+a );
-			GL11.glVertex3d(  v.x+a, b, v.y+a );
+			GL11.glVertex3d(  v.x+a,  oscillate ? offset + b : b, v.y-a );
+			GL11.glVertex3d( v.x-a,  oscillate ? offset + b : b, v.y-a );
+			GL11.glVertex3d( v.x-a, oscillate ? offset + b : b, v.y+a );
+			GL11.glVertex3d(  v.x+a, oscillate ? offset + b : b, v.y+a );
 		GL11.glEnd();
 		GL11.glBegin(GL11.GL_QUADS);	//Left
-			GL11.glVertex3d(  v.x-a,  a, v.y+a );
-			GL11.glVertex3d( v.x-a,  b, v.y+a );
-			GL11.glVertex3d( v.x-a, b, v.y-a );
-			GL11.glVertex3d(  v.x-a, a, v.y-a );
+			GL11.glVertex3d(  v.x-a,  oscillate ? offset + a : a, v.y+a );
+			GL11.glVertex3d( v.x-a,  oscillate ? offset + b : b, v.y+a );
+			GL11.glVertex3d( v.x-a, oscillate ? offset + b : b, v.y-a );
+			GL11.glVertex3d(  v.x-a, oscillate ? offset + a : a, v.y-a );
 		GL11.glEnd();
 		GL11.glBegin(GL11.GL_QUADS);	//Right
-			GL11.glVertex3d(  v.x+a,  b, v.y+a );
-			GL11.glVertex3d( v.x+a,  a, v.y+a );
-			GL11.glVertex3d( v.x+a, a, v.y-a );
-			GL11.glVertex3d(  v.x+a, b, v.y-a );
+			GL11.glVertex3d(  v.x+a,  oscillate ? offset + b : b, v.y+a );
+			GL11.glVertex3d( v.x+a,  oscillate ? offset + a : a, v.y+a );
+			GL11.glVertex3d( v.x+a, oscillate ? offset + a : a, v.y-a );
+			GL11.glVertex3d(  v.x+a, oscillate ? offset + b : b, v.y-a );
 		GL11.glEnd();
 	}
 }

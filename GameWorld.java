@@ -263,7 +263,7 @@ public class GameWorld {
             } else {
                 pollMouse();
                 pollKeyboard();
-                updateMap();
+                updateMap(frameDelta);
                 //drawEntities();
                 Display.update();
             }
@@ -348,7 +348,7 @@ public class GameWorld {
         //TODO: Read in the objects that make up the game world
     }
 
-    public void drawEntities() {
+    public void drawEntities(long deltaTime) {
         hero.draw();
             for (int i = 0; i < fdata.size(); i++) {
                 String[] temp = new String[25];
@@ -357,11 +357,11 @@ public class GameWorld {
 	                if (Integer.parseInt(temp[iclevel]) == 3) {
 	                	if(Integer.parseInt(temp[control]) == 1) {
 	                		GL11.glColor3d(0.5d, 0.8d, 0d);
-	                		hero.drawPyramid(Double.parseDouble(temp[longitude]),Double.parseDouble(temp[latitude]));
+	                		hero.drawPyramid(Double.parseDouble(temp[longitude]),Double.parseDouble(temp[latitude]),temp[0].equals(instinfo[0]),deltaTime);
 	                	}
 	                	else{
 	                		GL11.glColor3d(0d, 0.8d, 0.5d);
-	                		hero.drawCube(Double.parseDouble(temp[longitude]),Double.parseDouble(temp[latitude]));
+	                		hero.drawCube(Double.parseDouble(temp[longitude]),Double.parseDouble(temp[latitude]),temp[0].equals(instinfo[0]),deltaTime);
 	                	}
 	                    
 	                }
@@ -370,11 +370,11 @@ public class GameWorld {
 	                if (Integer.parseInt(temp[iclevel]) == 2) {
 	                	if(Integer.parseInt(temp[control]) == 1) {
 	                		GL11.glColor3d(1.0d, 0.8d, 0d);
-	                		hero.drawPyramid(Double.parseDouble(temp[longitude]),Double.parseDouble(temp[latitude]));
+	                		hero.drawPyramid(Double.parseDouble(temp[longitude]),Double.parseDouble(temp[latitude]),temp[0].equals(instinfo[0]),deltaTime);
 	                	}
 	                	else{
 	                		GL11.glColor3d(0.92d, 0.87d, 0.56d);
-	                		hero.drawCube(Double.parseDouble(temp[longitude]),Double.parseDouble(temp[latitude]));
+	                		hero.drawCube(Double.parseDouble(temp[longitude]),Double.parseDouble(temp[latitude]),temp[0].equals(instinfo[0]),deltaTime);
 	                	}
 	                }
                 }
@@ -382,11 +382,11 @@ public class GameWorld {
 	                if (Integer.parseInt(temp[iclevel]) == 1) {
 	                	if(Integer.parseInt(temp[control]) == 1) {
 	                		GL11.glColor3d(0.8d, 0.5d, 0d);
-	                		hero.drawPyramid(Double.parseDouble(temp[longitude]),Double.parseDouble(temp[latitude]));
+	                		hero.drawPyramid(Double.parseDouble(temp[longitude]),Double.parseDouble(temp[latitude]),temp[0].equals(instinfo[0]),deltaTime);
 	                	}
 	                	else{
 	                		GL11.glColor3d(0.8d, 0d, 0.3d);
-	                		hero.drawCube(Double.parseDouble(temp[longitude]),Double.parseDouble(temp[latitude]));
+	                		hero.drawCube(Double.parseDouble(temp[longitude]),Double.parseDouble(temp[latitude]),temp[0].equals(instinfo[0]),deltaTime);
 	                	}
 	                }
                 }
@@ -422,7 +422,7 @@ public class GameWorld {
         return temp;
     }
 
-    public void updateMap() {
+    public void updateMap(long deltaTime) {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
@@ -433,7 +433,7 @@ public class GameWorld {
         GL11.glRotatef(rotateZ, 1, 0, 0);
         GL11.glTranslatef(-targetX, 0, -targetZ);
         map.draw();
-        drawEntities();
+        drawEntities(deltaTime);
         GL11.glPopMatrix();
 
         setGraphicsMode("2D");
